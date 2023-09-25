@@ -1,35 +1,7 @@
-const products = [
-    {
-        id: 1,
-        title: 'Baby Yoda',
-        description: 'Baby Yoda sticker',
-        price: 9.99,
-        imageUrl: 'img/baby-yoda.svg'
-    },
-    {
-        id: 2,
-        title: 'Banana',
-        description: 'Banana sticker',
-        price: 10.99,
-        imageUrl: 'img/banana.svg'
-    },
-    {
-        id: 3,
-        title: 'Girl',
-        description: 'Girl sticker',
-        price: 8.99,
-        imageUrl: 'img/girl.svg'
-    },
-    {
-        id: 4,
-        title: 'Viking',
-        description: 'Viking sticker',
-        price: 7.99,
-        imageUrl: 'img/viking.svg'
-    }
-];
+const response = await fetch('api/products.json');
+const products = await response.json();
 
-function renderProducts(products) {
+function renderProducts(products, rate) {
     let productsHtml = '';
     for (const product of products) {
         productsHtml += 
@@ -42,7 +14,7 @@ function renderProducts(products) {
                     Info
                 </button>
                 <button class="product-card__buttons-buy button button-card">
-                    Buy - ${product.price}
+                    Buy - ${(product.price * rate).toFixed(2)}
                 </button>
             </div>
         </article>`;
@@ -50,4 +22,17 @@ function renderProducts(products) {
     document.querySelector('.products__list').innerHTML = productsHtml;
 }
 
-renderProducts(products);
+let currencies;
+async function changeCurrency() {
+    const currency = document.querySelector('.products__currency').value;
+    if (!currencies) {
+        const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+        currencies = await response.json();
+    }
+    const rate = currencies.rates[currency];
+    renderProducts(products, rate);
+}
+
+document.querySelector('.products__currency').addEventListener('change', changeCurrency);
+
+renderProducts(products, 1);

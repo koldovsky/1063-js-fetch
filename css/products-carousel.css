@@ -1,0 +1,32 @@
+.products__carousel {
+    min-height: 350px;
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    align-items: center;
+}
+
+.products__carousel-slide {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.products__carousel-indicators {
+    padding: 15px 0;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.products__carousel-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.products__carousel-indicator--active {
+    background-color: #000;
+}
